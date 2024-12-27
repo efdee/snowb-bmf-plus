@@ -1,13 +1,9 @@
 {
   "compilerOptions": {
     "experimentalDecorators": true,
-    "target": "es5",
-    "lib": [
-      "webworker",
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "es2017",
+    "useDefineForClassFields": true,
+    "lib": ["webworker", "dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -28,8 +24,5 @@
     "baseUrl": "./",
     "noEmit": true
   },
-  "include": [
-    "src",
-    "types"
-  ]
+  "include": ["src", "types"]
 }

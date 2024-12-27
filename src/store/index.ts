@@ -5,8 +5,8 @@ import Ui from './ui'
 import Workspace from './workspace'
 
 configure({
-  enforceActions: 'always',
-  computedRequiresReaction: true,
+  enforceActions: 'never',
+  computedRequiresReaction: false, //true,
 })
 
 export interface Store {

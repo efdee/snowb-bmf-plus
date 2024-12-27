@@ -151,7 +151,7 @@ class Font {
     }
     const url = URL.createObjectURL(new Blob([font]))
 
-    await updateFontFace(family, url)
+    // await updateFontFace(family, url)
 
     runInAction(() => {
       this.fonts.push({
@@ -161,6 +161,8 @@ class Font {
       })
       this.updateBaseines()
     })
+
+    await updateFontFace(family, url)
   }
 
   removeFont(fontResource: FontResource) {

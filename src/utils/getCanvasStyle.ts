@@ -24,8 +24,32 @@ interface Config {
   patternTexture: PatternTexture
 }
 
-const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-const matrix = svg.createSVGMatrix()
+let SVG, Matrix //, document
+
+// Check if running in Node.js or browser
+if (typeof window === 'undefined') {
+  // Node.js environment
+  //const svgdom = require('svgdom')
+  const svgjs = require('@svgdotjs/svg.js')
+  SVG = svgjs.SVG
+  Matrix = svgjs.Matrix
+
+  // Create a fake DOM using svgdom
+  // const window = svgdom.createWindow()
+  // document = window.document
+} else {
+  // Browser environment
+  SVG = (window as any).SVG
+  //document = window.document
+}
+
+let matrix: any
+if (typeof window !== 'undefined') {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  matrix = svg.createSVGMatrix()
+} else {
+  matrix = new Matrix()
+}
 
 export default function getCanvasStyle(
   ctx: CanvasRenderingContext2D,

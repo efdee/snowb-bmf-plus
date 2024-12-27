@@ -1,3 +1,4 @@
+import { createCanvas } from './createCanvas'
 import fontStyleStringify from './fontStyleStringify'
 
 interface StyleConig {
@@ -20,7 +21,7 @@ export default function getBaselinesFromCssText(
   text: string,
   styleConig: StyleConig,
 ): Baselines {
-  if (!canvas) canvas = document.createElement('canvas')
+  if (!canvas) canvas = createCanvas(1, 1) // document.createElement('canvas')
   const ctx = canvas.getContext('2d')
   if (!ctx) throw new Error('Get context 2d failed.')
   const font = fontStyleStringify(styleConig)

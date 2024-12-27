@@ -2,6 +2,7 @@ import { action, computed, makeObservable, observable } from 'mobx'
 import { deepObserve } from 'mobx-utils'
 import { GuillotineBinPack } from 'rectangle-packer'
 import getFontGlyphs from 'src/utils/getFontGlyphs'
+import { packing } from 'src/workers/autopacker'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import AutoPacker from 'worker-loader?filename=static/js/AutoPacker.[hash].worker.js!src/workers/AutoPacker.worker'
 
@@ -13,7 +14,7 @@ import Metric from './base/metric'
 import Style from './base/style'
 import Ui from './base/ui'
 
-interface TextRectangle {
+export interface TextRectangle {
   width: number
   height: number
   x: number
@@ -154,23 +155,30 @@ class Project {
       this.isPacking = false
       return
     }
-    this.worker = new AutoPacker()
-    this.worker.addEventListener(
-      'message',
-      action('PackerWorkerCallback', (messageEvent) => {
-        const { data } = messageEvent
-        this.setPack(data)
 
-        this.isPacking = false
-        this.worker?.terminate()
-        this.worker = null
-      }),
-      false,
-    )
+    var filtered = packList.filter(({ width, height }) => !!(width && height))
 
-    this.worker.postMessage(
-      packList.filter(({ width, height }) => !!(width && height)),
-    )
+    if (typeof window === 'undefined') {
+      const list = packing(filtered)
+      this.setPack(list as TextRectangle[])
+      this.isPacking = false
+    } else {
+      this.worker = new AutoPacker()
+      this.worker.addEventListener(
+        'message',
+        action('PackerWorkerCallback', (messageEvent) => {
+          const { data } = messageEvent
+          this.setPack(data)
+
+          this.isPacking = false
+          this.worker?.terminate()
+          this.worker = null
+        }),
+        false,
+      )
+
+      this.worker.postMessage(filtered)
+    }
   }
 
   setPack(list: TextRectangle[], failedList?: TextRectangle[]): void {
@@ -255,6 +263,7 @@ class Project {
       const g = this.glyphs.get(glyph.letter)
       if (g) g.setGlyphInfo(glyph)
     })
+    //console.log('in packstyle')
     this.setCanvas(canvas)
     this.throttlePack()
     // cancel(this.idleId)
@@ -288,13 +297,15 @@ class Project {
 
   throttlePack(): void {
     // if (this.idleId) return
-    window.clearTimeout(this.packTimer)
+    if (typeof window !== 'undefined') window.clearTimeout(this.packTimer)
     if (Date.now() - this.packStart > 500) {
       Promise.resolve().then(this.pack)
     } else {
-      this.packTimer = window.setTimeout(() => {
-        this.pack()
-      }, 500)
+      if (typeof window === 'undefined') this.pack()
+      else
+        this.packTimer = window.setTimeout(() => {
+          this.pack()
+        }, 500)
     }
     this.packStart = Date.now()
   }

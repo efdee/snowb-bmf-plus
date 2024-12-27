@@ -5,6 +5,7 @@ import {
   StrokeStyleConfig,
 } from 'src/store'
 
+import { createCanvas } from './createCanvas'
 import ctxDoPath from './ctxDoPath'
 import fontStyleStringify from './fontStyleStringify'
 import getCanvasStyle from './getCanvasStyle'
@@ -48,24 +49,27 @@ export default function getFontGlyphs(text: string[], config: Config) {
   const itemHeight = font.size + addY * 2
   const padding = font.size
 
-  let canvas = document.createElement('canvas')
+  const w = (itemWidth + padding * 2) * columnNum
+  const h = (itemHeight + padding * 2) * lineNum
+
+  let canvas = createCanvas(w, h) // document.createElement('canvas')
   let ctx = canvas.getContext('2d', {
     willReadFrequently: true,
     desynchronized: true,
     alpha: true,
     colorSpace: 'srgb',
   }) as CanvasRenderingContext2D
-  const strokCanvas = document.createElement('canvas')
+  const strokCanvas = createCanvas(w, h) // document.createElement('canvas')
   const strokCtx = strokCanvas.getContext('2d', {
     willReadFrequently: true,
     desynchronized: true,
     alpha: true,
     colorSpace: 'srgb',
   }) as CanvasRenderingContext2D
-  canvas.width = (itemWidth + padding * 2) * columnNum
-  canvas.height = (itemHeight + padding * 2) * lineNum
-  strokCanvas.width = canvas.width
-  strokCanvas.height = canvas.height
+  // canvas.width = w
+  // canvas.height = h
+  // strokCanvas.width = canvas.width
+  // strokCanvas.height = canvas.height
 
   const map = new Map<string, GlyphItem>()
 

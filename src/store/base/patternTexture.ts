@@ -31,7 +31,8 @@ class PatternTexture {
     })
     this.scale = use.num(pt.scale, 1)
     this.repetition = pt.repetition || 'repeat'
-    this.setImage(pt.buffer || this.buffer)
+
+    if (typeof window !== 'undefined') this.setImage(pt.buffer || this.buffer)
   }
 
   setImage(buffer: ArrayBuffer): void {

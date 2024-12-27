@@ -50,7 +50,7 @@ export default function toBmfInfo(project: Project, fontFamily = ''): BMFont {
   const pages: BMFontPage[] = [
     {
       id: 0,
-      file: `${name}.png`,
+      file: `${name}_0.png`,
     },
   ]
 

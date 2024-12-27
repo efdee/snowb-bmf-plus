@@ -1,6 +1,7 @@
 import { saveAs } from 'file-saver'
 import JSZip from 'jszip'
 import { Project } from 'src/store'
+import { createCanvas } from 'src/utils/createCanvas'
 import drawPackCanvas from 'src/utils/drawPackCanvas'
 
 import toBmfInfo from './toBmfInfo'
@@ -24,15 +25,23 @@ export default function exportFile(
 
   zip.file(`${saveFileName}.${config.ext}`, text)
 
-  const canvas = document.createElement('canvas')
-  canvas.width = ui.width
-  canvas.height = ui.height
+  let canvas = createCanvas(ui.width, ui.height)
   drawPackCanvas(canvas, packCanvas, glyphList, layout.padding)
 
-  canvas.toBlob((blob) => {
-    if (blob) zip.file(`${saveFileName}.png`, blob)
+  if (typeof window !== 'undefined') {
+    canvas.toBlob((blob: any) => {
+      if (blob) zip.file(`${saveFileName}.png`, blob)
+      zip
+        .generateAsync({ type: 'blob' })
+        .then((content) => saveAs(content, `${saveFileName}.zip`))
+    })
+  } else {
+    //console.log('no toBlob on canvas!')
+    const buffer = canvas.toBuffer('image/png')
+    const fs = eval("require('fs')")
     zip
-      .generateAsync({ type: 'blob' })
-      .then((content) => saveAs(content, `${saveFileName}.zip`))
-  })
+      .file(`${saveFileName}_0.png`, buffer)
+      .generateAsync({ type: 'nodebuffer' })
+      .then((content) => fs.writeFileSync(`${saveFileName}.zip`, content))
+  }
 }

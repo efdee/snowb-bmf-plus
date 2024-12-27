@@ -1,3 +1,4 @@
+import { createCanvas } from './createCanvas'
 import fontStyleStringify, { FontStyleConfig } from './fontStyleStringify'
 
 export interface LetterSize {
@@ -17,13 +18,13 @@ export default function getLetterSizeFromCssText(
   letter: string,
   config: FontStyleConfig,
 ): LetterSize {
-  if (!canvas) canvas = document.createElement('canvas')
+  if (!canvas) canvas = createCanvas(1, 1) // document.createElement('canvas')
   const ctx = canvas.getContext('2d')
   if (!ctx) throw new Error('Get context 2d failed.')
 
-  // clear before settings
-  canvas.width = 1
-  canvas.height = 1
+  // // clear before settings
+  // canvas.width = 1
+  // canvas.height = 1
 
   const font = fontStyleStringify(config)
 
