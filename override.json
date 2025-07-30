@@ -1,0 +1,19 @@
+{
+	"base": "C:\\Users\\filip\\Downloads\\Unnamed (4).sbf",
+	"variants": [
+		{
+			"name": "Franco Bold",
+			"filename": "FrancoBold-Green",
+			"override": {
+				"style": {
+					"stroke": {
+						"color": "green"
+					},
+					"shadow": {
+						"color": "green"
+					}
+				}
+			}
+		}
+	]
+}

@@ -1,8 +1,8 @@
 {
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "printWidth": 80,
+  "printWidth": 160,
   "trailingComma": "all",
-  "tabWidth": 2,
+  "tabWidth": 4,
   "semi": false,
   "singleQuote": true,
   "jsxSingleQuote": true,

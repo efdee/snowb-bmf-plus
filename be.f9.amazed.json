@@ -1,0 +1,34 @@
+{
+    "base": "C:\\Projects\\F9\\MonoMaze\\assets\\button-font.sbf",
+    "output": "files",
+    "outputPath": "C:\\Projects\\F9\\MonoMaze\\assets\\fonts",
+    "variants": [
+        {
+            "name": "DialogButton-FrancoBold",
+            "filename": "DialogButton-FrancoBold",
+            "override": {
+                "name": "DialogButton-FrancoBold",
+                "style": {
+                    "stroke": { "color": "#005178" },
+                    "shadow": { "color": "#005178" }
+                }
+            }
+        },
+        {
+            "name": "TitleScreen-Stats",
+            "filename": "TitleScreen-Stats",
+            "override": {
+                "name": "TitleScreen-Stats",
+                "style": {
+                    "font": {
+                        "size": 48
+                    },
+                    "stroke": { "color": "#005178", "width": 3 },
+                    "shadow": { "color": "#005178", "offsetY": 2 },
+                    "__stroke": { "color": "black", "width": 0 },
+                    "__shadow": { "color": "black", "offsetY": 3, "blur": 4 }
+                }
+            }
+        }
+    ]
+}
